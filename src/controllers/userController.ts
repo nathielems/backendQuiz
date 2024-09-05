@@ -21,7 +21,7 @@ export async function getUsers(): Promise<any[]> {
 }
 
 export async function createUser(user: IUser): Promise<IUser> {
-  const saltRounds = 10; // Número de salt rounds
+  const saltRounds = 10;
 
   try {
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
@@ -32,7 +32,6 @@ export async function createUser(user: IUser): Promise<IUser> {
     );
     connection.release();
     
-    // Retornar o novo usuário
     return {
       name: user.name,
       email:user.email,
@@ -41,5 +40,22 @@ export async function createUser(user: IUser): Promise<IUser> {
   } catch (error) {
     console.error('Error creating user:', error);
     throw error; 
+  }
+}
+
+export async function saveVocationalResult(user_id: number, result: string, detailsResult: string[]): Promise<void> {
+  try {
+    const connection = await pool.getConnection();
+    const detailsResultString = detailsResult.join(', '); // Convertendo o array para uma string separada por vírgulas
+
+    await connection.query(
+      'INSERT INTO vocational_answers (user_id, answer) VALUES (?, ?)',
+      [user_id, `${result}: ${detailsResultString}`]
+    );
+
+    connection.release();
+  } catch (error) {
+    console.error('Error saving vocational result:', error);
+    throw error;
   }
 }
