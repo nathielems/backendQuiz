@@ -22,14 +22,15 @@ export async function createUser(user: IUser): Promise<IUser> {
   try {
     const connection = await pool.getConnection();
     const [result] = await connection.query(
-      'INSERT INTO users (id, password) VALUES (?, ?)',
-      [user.id, user.password]
+      'INSERT INTO users (name, email, password) VALUES (?, ?)',
+      [user.name, user.email, user.password]
     );
     connection.release();
     
     // Retornar o novo usuário
     return {
-      id: user.id,
+      name: user.name,
+      email:user.email,
       password: user.password
     };
   } catch (error) {
