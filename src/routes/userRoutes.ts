@@ -14,7 +14,8 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   const user = {
-    id: req.body.id,
+    name: req.body.name,
+    email: req.body.email,
     password: req.body.password,
   };
 

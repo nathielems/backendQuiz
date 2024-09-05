@@ -21,7 +21,7 @@ app.get('/users', async (req: Request, res: Response) => {
 app.post('/users', async (req: Request, res: Response) => {
   const { id, password } = req.body;
   try {
-    await connection.query('INSERT INTO users (id, password) VALUES (?, ?)', [id, password]);
+    await connection.query('INSERT INTO users (name, email, password) VALUES (?, ?)', [name, email, password]);
     res.status(201).send('Usuário adicionado com sucesso');
   } catch (err) {
     console.error(err);

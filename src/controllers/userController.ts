@@ -1,9 +1,10 @@
 import pool from '../db';
 
 interface IUser {
-  id: string;
+  name: string;
+  email: string;
   password: string;
-}
+  }
 
 export async function getUsers(): Promise<any[]> {
   try {
