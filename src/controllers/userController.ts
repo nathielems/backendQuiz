@@ -22,7 +22,7 @@ export async function createUser(user: IUser): Promise<IUser> {
   try {
     const connection = await pool.getConnection();
     const [result] = await connection.query(
-      'INSERT INTO users (name, email, password) VALUES (?, ?)',
+      'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
       [user.name, user.email, user.password]
     );
     connection.release();
