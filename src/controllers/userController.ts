@@ -1,4 +1,6 @@
 import pool from '../db';
+import bcrypt from 'bcrypt';
+
 
 interface IUser {
   name: string;
@@ -19,11 +21,14 @@ export async function getUsers(): Promise<any[]> {
 }
 
 export async function createUser(user: IUser): Promise<IUser> {
+  const saltRounds = 10; // Número de salt rounds
+
   try {
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
     const connection = await pool.getConnection();
     const [result] = await connection.query(
       'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-      [user.name, user.email, user.password]
+      [user.name, user.email, hashedPassword]
     );
     connection.release();
     
