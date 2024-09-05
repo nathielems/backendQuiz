@@ -1,11 +1,13 @@
 import express from 'express';
 import connection from './db';
+import { Request, Response } from 'express';
+
 
 const app = express();
 app.use(express.json()); // Para interpretar JSON
 
 // Rota para obter todos os usuários
-app.get('/users', async (req, res) => {
+app.get('/users', async (req: Request, res: Response) => {
   try {
     const [rows] = await connection.query('SELECT * FROM users');
     res.json(rows);
@@ -16,7 +18,7 @@ app.get('/users', async (req, res) => {
 });
 
 // Rota para adicionar um novo usuário
-app.post('/users', async (req, res) => {
+app.post('/users', async (req: Request, res: Response) => {
   const { id, password } = req.body;
   try {
     await connection.query('INSERT INTO users (id, password) VALUES (?, ?)', [id, password]);
