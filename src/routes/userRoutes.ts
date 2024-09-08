@@ -32,12 +32,23 @@ router.post('/', async (req: Request, res: Response) => {
 router.post('/save-vocational-result', async (req, res) => {
   const { user_id, maxOption, result, detailsResult } = req.body;
 
-  try {
-    await saveVocationalResult(user_id, result, detailsResult);
-    res.status(200).send('Vocational result saved successfully');
-  } catch (error) {
-    res.status(500).send('Error saving vocational result');
+  async function trySaveVocationalResult(attempt = 1) {
+    try {
+      await saveVocationalResult(user_id, result, detailsResult);
+      res.status(200).send('Vocational result saved successfully');
+    } catch (error) {
+      if (attempt < 2) {
+        console.log(`Tentativa ${attempt} falhou. Tentando novamente...`);
+        trySaveVocationalResult(attempt + 1); 
+      } else {
+        console.error('Erro ao salvar resultado vocacional:', error);
+        res.status(500).send('Error saving vocational result'); 
+      }
+    }
   }
+
+  trySaveVocationalResult();
 });
+
 
 export default router;
