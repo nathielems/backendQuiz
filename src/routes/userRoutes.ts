@@ -1,7 +1,5 @@
 import { Router, Request, Response } from 'express';
 import { createUser, getUsers } from '../controllers/userController';
-import { saveVocationalResult } from '../controllers/userController';
-
 
 const router = Router();
 
@@ -27,27 +25,6 @@ router.post('/', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'Failed to create user' });
   }
-});
-
-router.post('/save-vocational-result', async (req, res) => {
-  const { user_id, maxOption } = req.body;
-
-  async function trySaveVocationalResult(attempt = 1) {
-    try {
-      await saveVocationalResult(user_id, maxOption);
-      res.status(200).send('Vocational result saved successfully');
-    } catch (error) {
-      if (attempt < 2) {
-        console.log(`Tentativa ${attempt} falhou. Tentando novamente...`);
-        trySaveVocationalResult(attempt + 1); 
-      } else {
-        console.error('Erro ao salvar resultado vocacional:', error);
-        res.status(500).send('Error saving vocational result'); 
-      }
-    }
-  }
-
-  trySaveVocationalResult();
 });
 
 

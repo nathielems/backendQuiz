@@ -20,9 +20,9 @@ app.get('/users', async (req, res) => {
 });
 // Rota para adicionar um novo usuário
 app.post('/users', async (req, res) => {
-    const { id, password } = req.body;
+    const { name, email, password } = req.body;
     try {
-        await db_1.default.query('INSERT INTO users (id, password) VALUES (?, ?)', [id, password]);
+        await db_1.default.query('INSERT INTO users (name, email, password) VALUES (?, ?)', [name, email, password]);
         res.status(201).send('Usuário adicionado com sucesso');
     }
     catch (err) {

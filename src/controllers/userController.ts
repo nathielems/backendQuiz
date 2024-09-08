@@ -42,19 +42,3 @@ export async function createUser(user: IUser): Promise<IUser> {
     throw error; 
   }
 }
-
-export async function saveVocationalResult(user_id: number, maxOption: string): Promise<void> {
-  try {
-    const connection = await pool.getConnection();
-
-    await connection.query(
-      'INSERT INTO vocational_answers (user_id, answer) VALUES (?, ?)',
-      [user_id, maxOption]
-    );
-
-    connection.release();
-  } catch (error) {
-    console.error('Error saving vocational result:', error);
-    throw error;
-  }
-}

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import userRoutes from './routes/userRoutes';
+import testRoutes from './routes/testRoutes';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import connection from './db'; 
@@ -12,13 +13,12 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/users', userRoutes);
+app.use('/test', testRoutes)
 
-// Rota para login
 app.post('/login', async (req: express.Request, res: express.Response) => {
   const { email, password } = req.body;
 
   try {
-    // Verificar se o usuário existe
     const [rows]: any = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
     const user = rows[0];
 
@@ -26,14 +26,12 @@ app.post('/login', async (req: express.Request, res: express.Response) => {
       return res.status(401).send('Usuário não encontrado');
     }
 
-    // Verificar a senha
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
       return res.status(401).send('Senha incorreta');
     }
 
-    // Gerar um token JWT
     const token = jwt.sign({ id: user.id }, 'your_jwt_secret_key', { expiresIn: '1h' });
 
     res.json({ token });
