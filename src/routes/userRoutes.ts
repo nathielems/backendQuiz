@@ -30,11 +30,11 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 router.post('/save-vocational-result', async (req, res) => {
-  const { user_id, maxOption, result, detailsResult } = req.body;
+  const { user_id, maxOption } = req.body;
 
   async function trySaveVocationalResult(attempt = 1) {
     try {
-      await saveVocationalResult(user_id, result, detailsResult);
+      await saveVocationalResult(user_id, maxOption);
       res.status(200).send('Vocational result saved successfully');
     } catch (error) {
       if (attempt < 2) {

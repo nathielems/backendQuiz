@@ -43,14 +43,13 @@ export async function createUser(user: IUser): Promise<IUser> {
   }
 }
 
-export async function saveVocationalResult(user_id: number, result: string, detailsResult: string[]): Promise<void> {
+export async function saveVocationalResult(user_id: number, maxOption: string): Promise<void> {
   try {
     const connection = await pool.getConnection();
-    const detailsResultString = detailsResult.join(', '); // Convertendo o array para uma string separada por vírgulas
 
     await connection.query(
       'INSERT INTO vocational_answers (user_id, answer) VALUES (?, ?)',
-      [user_id, `${result}: ${detailsResultString}`]
+      [user_id, maxOption]
     );
 
     connection.release();
