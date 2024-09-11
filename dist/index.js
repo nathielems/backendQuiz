@@ -29,7 +29,8 @@ app.post('/login', async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).send('Senha incorreta');
         }
-        const token = jsonwebtoken_1.default.sign({ id: user.id }, 'your_jwt_secret_key', { expiresIn: '1h' });
+        const token = jsonwebtoken_1.default.sign({ id: user.id, user: user.name }, 'your_jwt_secret_key', { expiresIn: '1h' });
+        console.log('rodando dev');
         res.json({ token });
     }
     catch (err) {

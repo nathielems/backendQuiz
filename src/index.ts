@@ -32,8 +32,7 @@ app.post('/login', async (req: express.Request, res: express.Response) => {
       return res.status(401).send('Senha incorreta');
     }
 
-    const token = jwt.sign({ id: user.id }, 'your_jwt_secret_key', { expiresIn: '1h' });
-
+    const token = jwt.sign({ id: user.id, user: user.name }, 'your_jwt_secret_key', { expiresIn: '1h' });
     res.json({ token });
   } catch (err) {
     console.error(err);
