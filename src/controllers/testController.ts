@@ -77,7 +77,7 @@ export async function getTestType(): Promise<any> {
     const connection = await pool.getConnection();
 
     // Consulta para buscar matérias distintas
-    const [typeTest] = await connection.execute('SELECT DISTINCT materia FROM questions;');
+    const [typeTest] = await connection.execute('SELECT DISTINCT materia, nome_materia FROM questions;');
 
     connection.release();
 
