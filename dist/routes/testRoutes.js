@@ -46,4 +46,23 @@ router.get('/get-vocational-result', async (req, res) => {
     }
     tryGetVocationalResult();
 });
+router.get('/question-test', async (req, res) => {
+    const subject = req.query.subject;
+    try {
+        const result = await (0, testController_1.getTest)(subject);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Erro ao obter perguntas' });
+    }
+});
+router.get('/test-types', async (req, res) => {
+    try {
+        const result = await (0, testController_1.getTestType)();
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Erro ao obter perguntas' });
+    }
+});
 exports.default = router;
